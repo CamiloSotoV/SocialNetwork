@@ -110,6 +110,26 @@ exports.query = async function (req, res, next) {
     }
 }
 
+exports.getImage = async function (req, res, next) {
+    try {
+        const image = req.params.image;
+        const dirImage = path.resolve(__dirname, '../images/posts/', image);
+        const existe = fs.existsSync(dirImage);
+        if (!existe) {
+            const defaultImage = path.resolve(__dirname, '../assets/400x250.jpg');
+            const existe2 = fs.existsSync(defaultImage);
+            console.log({ existe2, defaultImage });
+            res.sendFile(defaultImage);
+        } else {
+            res.sendFile(dirImage);
+        }
+
+    } catch (e) {
+        res.status(500).json({ message: 'Error interno' });
+        next(e);
+    }
+}
+
 exports.myPosts = async function (req, res, next) {
     try {
         const _id = req.headers.id;

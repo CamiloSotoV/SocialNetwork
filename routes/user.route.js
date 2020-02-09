@@ -4,6 +4,7 @@ const controller = require('../controllers/user.controller');
 router.post('/create', controller.add);
 router.post('/login', controller.login);
 router.get('/list', controller.list);
+router.get('/image/:image', controller.getImage);
 router.get('/query/:id', controller.query);
 router.put('/update/:id', controller.update);
 router.put('/upload/:id', controller.uploadImage);

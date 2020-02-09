@@ -5,6 +5,7 @@ router.post('/create', controller.add);
 router.get('/list', controller.list);
 router.get('/query/:id', controller.query);
 router.get('/posts', controller.myPosts);
+router.get('/image/:image', controller.getImage);
 router.delete('/remove/:id', controller.remove);
 
 module.exports = router;
