@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const schema = new Schema({
-    post: { type: Schema.Types.ObjectId, ref: 'post' },
+    user: { type: Schema.Types.ObjectId, ref: 'user' },
     image: { type: String, require: true },
 });
 
