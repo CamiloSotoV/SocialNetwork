@@ -23,62 +23,15 @@ async function deleteImage(image) {
     }
 }
 
-async function saveImage(file, _id, body) {
-    return new Promise((resolve, reject) => {
-        // Path 
-        const dir = path.resolve(__dirname, '../images/posts');
-        const exists = fs.existsSync(dir);
-        if (!exists) {
-            fs.mkdirSync(dir);
-        }
-        // Name
-        const array = file.name.split('.');
-        const ext = array[array.length - 1];
-        const id = uniqid();
-        const nameImage = `${id}.${ext}`;
-        file.mv(`${dir}/${nameImage}`, (err) => {
-            if (err) {
-                reject(err);
-            }
-            else {
-                const add = addImage(nameImage, body);
-                if (!add) reject();
-                resolve();
-            }
-        });
-    });
-
-}
-
-async function addImage(nameImage, body) {
-    const post = await models.Post.create({ user: body.user, description: body.description, imgs: nameImage });
-    if (!post) return false;
-    return true;
-}
 
 exports.add = async function (req, res, next) {
     try {
-        const _id = req.headers.id;
-        const body = {
-            user: _id,
-            description: req.body.description
-        }
-        const existe = validarId(_id);
-        if (existe) {
-            if (!req.files) res.status(400).json('No Files');
-            const file = req.files.image;
-            if (!file) res.status(400).json('No Image');
-            if (!file.mimetype.includes('image')) res.status(400).json('No Type Image');
-            await saveImage(file, _id, body)
-                .then(response => {
-                    res.status(200).json('image upload');
-                })
-                .catch(err => {
-                    res.status(500).json(err);
-                });
-
+        req.body.user = req.headers.id;
+        const post = await models.Post.create(req.body);
+        if (!post) {
+            res.status(400).json({ message: 'Bad request' });
         } else {
-            res.status(404).json({ mensaje: 'Registro no encontrado' });
+            res.status(201).json(post);
         }
     } catch (e) {
         res.status(500).json({ message: 'Error interno' });
