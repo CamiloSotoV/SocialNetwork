@@ -43,6 +43,7 @@ exports.list = async function (req, res, next) {
     try {
         const following = await models.Follow.find({ Following: req.headers.id });
         let arrayFollowing = [];
+        arrayFollowing.push(req.headers.id)
         following.forEach(followed => arrayFollowing.push(followed.follower));
         posts = await models.Post.find({ user: { "$in": arrayFollowing } });
         res.status(200).json({ posts, count: posts.length });
