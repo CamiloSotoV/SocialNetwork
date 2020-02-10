@@ -34,7 +34,7 @@ exports.add = async function (req, res, next) {
             res.status(201).json(post);
         }
     } catch (e) {
-        res.status(500).json({ message: 'Error interno' });
+        res.status(500).json({ message: 'Error interno', e });
         next(e);
     }
 }
