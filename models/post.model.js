@@ -5,7 +5,7 @@ const schema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'user' },
     description: { type: String },
     images: [{
-        image: { type: String, unique: true }
+        image: { type: String }
     }],
     likes: { type: Number, default: 0 },
     coments: { type: Number, default: 0 },
